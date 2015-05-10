@@ -5,29 +5,30 @@
 
 Lokomotywa *lok;
 int width, height;
-// wpó³rzêdne po³o¿enia obserwatora
 
-GLdouble eyex = 2;
-GLdouble eyey = 2;
+// polozenie obserwatora
+GLdouble eyex = 0;
+GLdouble eyey = 3;
 GLdouble eyez = 5;
 
-// wspó³rzêdne punktu w którego kierunku jest zwrócony obserwator,
-
+// punkt w ktorego kierunku jest zwrocony obserwator
 GLdouble centerx = 0;
 GLdouble centery = 0;
 GLdouble centerz = 0;
 
+bool readyToGo = false;
+
 void init()			// devil/openil (obsluga tesktur), glm  (matematyka), glulookat (sterowanie polem widzenia)
 {
 	lok = new Lokomotywa();
-	GLfloat mat_ambient[] = { 1.0, 1.0, 1.0, 1.0 };
+	GLfloat mat_ambient[] = { 1.0, 1.0, 1.0, 0.5 };
 	GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-	GLfloat light_position[] = { 0.0, 0.0, 10.0, 1.0 };
+	GLfloat light_position[] = { 0.0, 0.0, 10.0, 0.5 };
 	GLfloat lm_ambient[] = { 0.4, 0.4, 0.4, 1.0 };
 
 	glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
-	glMaterialf(GL_FRONT, GL_SHININESS, 50.0);
+	glMaterialf(GL_FRONT, GL_SHININESS, 20.0);
 	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lm_ambient);
 
@@ -42,6 +43,7 @@ void init()			// devil/openil (obsluga tesktur), glm  (matematyka), glulookat (s
 	glDepthFunc(GL_LESS);
 	glEnable(GL_DEPTH_TEST);
 }
+
 
 
 void displayLokomotywa()
@@ -71,7 +73,7 @@ void display()
 	
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(90, (GLfloat)width / (GLfloat)height, 0.1, 1000.0);
+	gluPerspective(120, (GLfloat)width / (GLfloat)height, 0.1, 100.0);
 	
 	glPushMatrix(); 
 	gluLookAt(eyex, eyey, eyez,
@@ -82,9 +84,12 @@ void display()
 	//glRotatef((GLfloat)frameNumber, 0.0, 1.0, 0.0);
 	
 	glMatrixMode(GL_MODELVIEW);
-	//displayObjects(frameNumber);
-	glRotatef(1, 0.0, 1.0, 0.0);
-	glTranslatef(0.1, 0.0, 0.0);
+	// jazda po kole
+	if (readyToGo)
+	{
+		glRotatef(1, 0.0, 1.0, 0.0);
+		glTranslatef(0.1, 0.0, 0.0);
+	}
 	displayLokomotywa();
 	glMatrixMode(GL_PROJECTION);
 	glPopMatrix();
@@ -94,7 +99,8 @@ void display()
 
 void reshape(GLsizei w, GLsizei h)
 {
-	if (h > 0 && w > 0) {
+	if (h > 0 && w > 0) 
+	{
 		width = w;
 		height = h;
 		glViewport(0, 0, w, h);
@@ -113,7 +119,16 @@ void reshape(GLsizei w, GLsizei h)
 		glMatrixMode(GL_MODELVIEW);
 	}
 }
-
+/*
+Start/zatrzymanie animacji
+*/
+void keyboardStart(unsigned char key, int x, int y)
+{
+	if (key == 32 && !readyToGo) readyToGo = true;
+	else if (key == 32 && readyToGo) readyToGo = false;
+	// odrysowanie okna
+	reshape(glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
+}
 
 int main(int argc, char** argv)
 {
@@ -124,14 +139,12 @@ int main(int argc, char** argv)
 	glutInitWindowPosition(100, 100);
 	glutInitWindowSize(800, 800);
 
-	glutCreateWindow("Lokomotywa");
-
-	//Lokomotywa *lok = new Lokomotywa;
-
+	glutCreateWindow("Lokomotywa - GKOM, Piotr Misiowiec");
+	
 	glutDisplayFunc(display);
 	glutReshapeFunc(reshape);
 	glutIdleFunc(display);
-
+	glutKeyboardFunc(keyboardStart);
 
 	init();
 
