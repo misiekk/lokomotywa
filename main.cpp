@@ -1,14 +1,17 @@
 #include <Windows.h>
+#include <time.h>
 #include "GLUT.H"
 #include <gl\GL.h>
 #include "lokomotywa.h"
+#include "Tory.h"
 
 Lokomotywa *lok;
+Tory *tory;
 int width, height;
 
 // polozenie obserwatora
 GLdouble eyex = 0;
-GLdouble eyey = 3;
+GLdouble eyey = 5;
 GLdouble eyez = 5;
 
 // punkt w ktorego kierunku jest zwrocony obserwator
@@ -18,9 +21,17 @@ GLdouble centerz = 0;
 
 bool readyToGo = false;
 
+void sleep(unsigned int mseconds)
+{
+	clock_t goal = mseconds + clock();
+	while (goal > clock());
+}
+
+
 void init()			// devil/openil (obsluga tesktur), glm  (matematyka), glulookat (sterowanie polem widzenia)
 {
 	lok = new Lokomotywa();
+	tory = new Tory();
 	GLfloat mat_ambient[] = { 1.0, 1.0, 1.0, 0.5 };
 	GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
 	GLfloat light_position[] = { 0.0, 0.0, 10.0, 0.5 };
@@ -42,6 +53,8 @@ void init()			// devil/openil (obsluga tesktur), glm  (matematyka), glulookat (s
 
 	glDepthFunc(GL_LESS);
 	glEnable(GL_DEPTH_TEST);
+
+	
 }
 
 
@@ -49,6 +62,7 @@ void init()			// devil/openil (obsluga tesktur), glm  (matematyka), glulookat (s
 void displayLokomotywa()
 {
 	lok->draw();
+	
 }
 
 void displayObjects(int frameNum)
@@ -58,6 +72,7 @@ void displayObjects(int frameNum)
 
 void display()
 {
+	/*
 	static int frameNumber = 0;
 	if (frameNumber < 360)
 	{
@@ -67,32 +82,37 @@ void display()
 	{
 		frameNumber = 0;
 	}
-
+	*/
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(0.0, 0.0, 0.9, 0.5);
+	glClearColor(0.0, 0.5, 0.0, 0.5);
 	
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(120, (GLfloat)width / (GLfloat)height, 0.1, 100.0);
-	
+	tory->Lines();
 	glPushMatrix(); 
 	gluLookAt(eyex, eyey, eyez,
 		centerx, centery, centerz,
 		0, 1, 0);
-	
+
 	//glTranslatef(0.1, 0.1, 0.5);
 	//glRotatef((GLfloat)frameNumber, 0.0, 1.0, 0.0);
 	
 	glMatrixMode(GL_MODELVIEW);
+	
 	// jazda po kole
-	if (readyToGo)
+	/*if (readyToGo)
 	{
 		glRotatef(1, 0.0, 1.0, 0.0);
 		glTranslatef(0.1, 0.0, 0.0);
-	}
+	}*/
+	tory->Lines();
 	displayLokomotywa();
+	
 	glMatrixMode(GL_PROJECTION);
+	
 	glPopMatrix();
+
 	glFlush();
 	glutSwapBuffers();
 }

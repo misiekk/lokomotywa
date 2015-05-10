@@ -47,5 +47,7 @@ void Lokomotywa::draw()
 
 	glPopMatrix();
 
+	
+
 }
 
