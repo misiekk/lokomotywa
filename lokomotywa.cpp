@@ -47,7 +47,13 @@ void Lokomotywa::draw()
 
 	glPopMatrix();
 
-	
+}
 
+
+void Lokomotywa::move()
+{
+	// jedziemy po okregu
+	// x = rcosFI
+	// z = rsinFI
 }
 

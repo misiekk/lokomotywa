@@ -34,7 +34,7 @@ void init()			// devil/openil (obsluga tesktur), glm  (matematyka), glulookat (s
 	tory = new Tory();
 	GLfloat mat_ambient[] = { 1.0, 1.0, 1.0, 0.5 };
 	GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-	GLfloat light_position[] = { 0.0, 0.0, 10.0, 0.5 };
+	GLfloat light_position[] = { 0.0, 5.0, 10.0, 0.5 };
 	GLfloat lm_ambient[] = { 0.4, 0.4, 0.4, 1.0 };
 
 	glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
@@ -65,6 +65,21 @@ void displayLokomotywa()
 	
 }
 
+void sky()
+{
+	glPushMatrix();
+	glDisable(GL_LIGHTING);
+	glBegin(GL_POLYGON);
+	glColor3f(0, 1, 1);
+	glVertex3f(100, 1, -10);
+	glVertex3f(100, 100, -10);
+	glVertex3f(-100, 100, -10);
+	glVertex3f(-100, 1, -10);
+	glEnd();
+	glEnable(GL_LIGHTING);
+	glPopMatrix();
+}
+
 void displayObjects(int frameNum)
 {
 	
@@ -89,7 +104,7 @@ void display()
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(120, (GLfloat)width / (GLfloat)height, 0.1, 100.0);
-	tory->Lines();
+	
 	glPushMatrix(); 
 	gluLookAt(eyex, eyey, eyez,
 		centerx, centery, centerz,
@@ -106,6 +121,7 @@ void display()
 		glRotatef(1, 0.0, 1.0, 0.0);
 		glTranslatef(0.1, 0.0, 0.0);
 	}*/
+	sky();
 	tory->Lines();
 	displayLokomotywa();
 	
@@ -126,14 +142,16 @@ void reshape(GLsizei w, GLsizei h)
 		glViewport(0, 0, w, h);
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
+		
 		gluPerspective(90, (GLfloat)w / (GLfloat)h, 0.1, 1000.0);
-		/*if (w <= h) {
-			//glOrtho(-2.25, 2.25, -2.25*h / w, 2.25*h / w, -10.0, 10.0);
-			glFrustum(-1.5, 1.5, -1.5*h / w, 1.5*w / h, -10.0, 10.0);
+		/*
+		if (w <= h) {
+			glOrtho(-12.25, 12.25, -12.25*h / w, 12.25*h / w, -10.0, 100.0);
+			//glFrustum(-1.5, 1.5, -1.5*h / w, 1.5*w / h, -10.0, 10.0);
 		}
 		else {
-			//glOrtho(-2.25*w / h, 2.25*w / h, -2.25, 2.25, -10.0, 10.0);
-			glFrustum(-1.5*w / h, 1.5*w / h, -1.5, 1.5 + h, -10.0, 10.0);
+			glOrtho(-12.25*w / h, 12.25*w / h, -12.25, 12.25, -10.0, 100.0);
+			//glFrustum(-1.5*w / h, 1.5*w / h, -1.5, 1.5 + h, -10.0, 10.0);
 		}*/
 		glTranslatef(0.0, 0.0, 0.5);
 		glMatrixMode(GL_MODELVIEW);
@@ -146,6 +164,34 @@ void keyboardStart(unsigned char key, int x, int y)
 {
 	if (key == 32 && !readyToGo) readyToGo = true;
 	else if (key == 32 && readyToGo) readyToGo = false;
+	
+	// sterowanie kamera
+	// TODO: ograniczenia
+	if (key == 'w')
+	{
+		eyey += 0.1;
+	}
+	if (key == 's')
+	{
+		eyey -= 0.1;
+	}
+	if (key == 'a')
+	{
+		eyex -= 0.1;
+	}
+	if (key == 'd')
+	{
+		eyex += 0.1;
+	}
+	if (key == 'z')
+	{
+		eyez += 0.1;
+	}
+	if (key == 'x')
+	{
+		eyez -= 0.1;
+	}
+
 	// odrysowanie okna
 	reshape(glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
 }
