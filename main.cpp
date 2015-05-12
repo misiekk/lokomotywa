@@ -62,6 +62,7 @@ void init()			// devil/openil (obsluga tesktur), glm  (matematyka), glulookat (s
 void displayLokomotywa()
 {
 	lok->draw();
+	lok->move();
 	
 }
 
@@ -87,17 +88,6 @@ void displayObjects(int frameNum)
 
 void display()
 {
-	/*
-	static int frameNumber = 0;
-	if (frameNumber < 360)
-	{
-		frameNumber++;
-	}
-	else if (frameNumber == 360)
-	{
-		frameNumber = 0;
-	}
-	*/
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.0, 0.5, 0.0, 0.5);
 	
@@ -124,6 +114,7 @@ void display()
 	sky();
 	tory->Lines();
 	displayLokomotywa();
+	
 	
 	glMatrixMode(GL_PROJECTION);
 	

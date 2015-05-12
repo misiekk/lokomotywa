@@ -10,7 +10,9 @@ void Lokomotywa::draw()
 	GLUquadricObj *obj = gluNewQuadric();
 	GLfloat torus_diffuse[] = { 0.0, 1.0, 0.0, 1.0 };
 	glPushMatrix();
-	//glTranslatef(-1.5, 0.0, 0.0);
+	glRotatef(this->alfa, 0.0, 1.0, 0.0);
+	glTranslatef(x, 1.0, z);		// wstepne przesuniecie modelu
+
 	// komin-------------
 		glPushMatrix();
 		//glRotatef((GLfloat)(frameNum), 0.0, 1.0, 0.0);
@@ -55,5 +57,10 @@ void Lokomotywa::move()
 	// jedziemy po okregu
 	// x = rcosFI
 	// z = rsinFI
+	x = R*sin(alfa);
+	z = R*cos(alfa);
+	alfa += 0.1;
+	if (alfa >= 360.0) alfa = 0.0;
+
 }
 
