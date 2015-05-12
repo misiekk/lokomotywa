@@ -13,9 +13,18 @@ public:
 	void move();
 private:
 	// promien toru lokomotywy
-	const int R = 3;
+	const int R = 5;
 	// wspolrzedne
-	float x = 0.0, z = -4.0;
-	float alfa = 0;
-
+	GLfloat x = 0.0, z = -4.0;
+	GLfloat alfa = 0.0;
+	
+	// wskazówki jakoœci generacji mg³y
+	GLint fog_hint = GL_DONT_CARE;
+	// pocz¹tek i koniec oddzia³ywania mg³y liniowej
+	GLfloat fog_start = 0.0;
+	GLfloat fog_end = 2.0;
+	// gêstoœæ mg³y
+	GLfloat fog_density = 0.5;
+	// rodzaj mg³y
+	GLfloat fog_mode = GL_LINEAR;
 };

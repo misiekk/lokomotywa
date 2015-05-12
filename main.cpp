@@ -57,8 +57,6 @@ void init()			// devil/openil (obsluga tesktur), glm  (matematyka), glulookat (s
 	
 }
 
-
-
 void displayLokomotywa()
 {
 	lok->draw();
