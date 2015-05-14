@@ -110,8 +110,8 @@ void display()
 		glTranslatef(0.1, 0.0, 0.0);
 	}*/
 	sky();
-	tory->Lines();
 	displayLokomotywa();
+	tory->drawTory();
 	
 	
 	glMatrixMode(GL_PROJECTION);

@@ -91,6 +91,6 @@ void Lokomotywa::move()
 	glVertex3f(8.0, 8.0, 8.0);
 	glEnd();*/
 	glDisable(GL_FOG);
-	glutSolidSphere(3.0, 30, 30);
+	//glutSolidSphere(3.0, 30, 30);
 }
 
