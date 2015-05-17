@@ -122,6 +122,11 @@ void display()
 	glutSwapBuffers();
 }
 
+void displayIdle()
+{
+
+}
+
 void reshape(GLsizei w, GLsizei h)
 {
 	if (h > 0 && w > 0) 

@@ -10,7 +10,10 @@ class Lokomotywa
 public:
 	Lokomotywa();
 	void draw();
+	void drawWheel(GLfloat x, GLfloat y, GLfloat z, GLdouble innerradius, GLdouble outerradius);
 	void move();
+	GLfloat getNextWheelXCord(int i, GLfloat radius);
+	GLfloat getNextWheelYCord(int i, GLfloat radius);
 private:
 	// promien toru lokomotywy
 	const int R = 5;

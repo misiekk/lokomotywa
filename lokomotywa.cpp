@@ -41,16 +41,38 @@ void Lokomotywa::draw()
 		glutSolidCube(1.0);
 		glPopMatrix();
 
-	// kolo
+	// kola
 		glPushMatrix();
-		glMaterialfv(GL_FRONT, GL_DIFFUSE, torus_diffuse);
-		glTranslatef(1.0, -1.0, 0.45);
-		//gluDisk(obj, 0.2, 0.3, 20, 20);
-		gluCylinder(obj, 0.1, 0.1, 0.05, 20, 20);
+		
+		drawWheel(1.0, -1.0, 0.45, 0.4, 0.5);
 		glPopMatrix();
-
 	glPopMatrix();
 
+}
+
+void Lokomotywa::drawWheel(GLfloat x, GLfloat y, GLfloat z, GLdouble innerradius, GLdouble outerradius)
+{
+	GLUquadricObj *obj = gluNewQuadric();
+	glPushMatrix();
+	
+	glTranslatef(x, y, z);
+	glRotatef(-this->alfa * 3, 0.0, 0.0, 1.0);
+	glDisable(GL_LIGHTING);
+	for (int i = 0; i < 4; i++)
+	{
+		GLfloat x = getNextWheelXCord(i, innerradius);
+		GLfloat y = getNextWheelYCord(i, innerradius);
+		glBegin(GL_LINES);
+		glColor3f(1.0, 0.0, 0.0);
+		glVertex3f(-x, -y, 0.05);
+		glVertex3f(x, y, 0.05);
+		glEnd();
+	}
+	glColor3f(0.0, 0.0, 0.0);
+	gluCylinder(obj, innerradius+0.01, innerradius+0.01, 0.1, 20, 20);
+	//gluDisk(obj, innerradius, outerradius, 20, 20);
+	glEnable(GL_LIGHTING);
+	glPopMatrix();
 }
 
 
@@ -94,3 +116,18 @@ void Lokomotywa::move()
 	//glutSolidSphere(3.0, 30, 30);
 }
 
+GLfloat Lokomotywa::getNextWheelXCord(int i, GLfloat radius)
+{
+	GLfloat cordX;
+	GLfloat dFI = 45;
+	cordX = (GLfloat)radius*cos(M_PI*i*dFI / 180.0);
+	return cordX;
+}
+
+GLfloat Lokomotywa::getNextWheelYCord(int i, GLfloat radius)
+{
+	GLfloat cordY;
+	GLfloat dFI = 45;
+	cordY = (GLfloat)radius*sin(M_PI*i*dFI / 180.0);
+	return cordY;
+}
