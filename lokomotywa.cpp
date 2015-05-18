@@ -11,46 +11,75 @@ void Lokomotywa::draw()
 	//std::cout << "draw \n";
 	GLUquadricObj *obj = gluNewQuadric();
 	GLfloat torus_diffuse[] = { 0.0, 1.0, 0.0, 1.0 };
+
+
+	//wymiary czesci skladowych
+	//prostopadloscian podstawy lokomotywy
+	GLfloat xProst = 2.0,
+		yProst = 0.5,
+		zProst = 1.0;
+
+	// stozek
+	GLfloat stozekR = 0.5,
+		stozekH = 0.6;
+
+	// walec poziomy
+	GLfloat walecR1 = 0.5,
+		walecR2 = 0.5,
+		walecH = 1.8;
+
+	// komin
+	GLfloat kominR1 = 0.2,
+		kominR2 = 0.2,
+		kominH = 0.8;
+
 	glPushMatrix();
 	
 	glTranslatef(x, 1.0, z);		// przesuniecie modelu
 	glRotatef(this->alfa, 0.0, 1.0, 0.0);
 	// komin-------------
 		glPushMatrix();
-		//glRotatef((GLfloat)(frameNum), 0.0, 1.0, 0.0);
-		//glTranslatef(-0.80, 0.35, 0.0); //0.35
-		//glRotatef(100.0, 1.0, 0.0, 0.0);
-		//glRotatef((GLfloat)(frameNum), 1.0, 0.0, 0.0);
-		//glScalef((GLfloat)frameNum / 180, 1.0, (GLfloat)frameNum / 180);
 		glMaterialfv(GL_FRONT, GL_DIFFUSE, torus_diffuse);
-		//glColor3f(1.0, 0.1, 0.1);
-		//glTranslatef(2.0, 2.0, 1.0);
 		glRotatef(90, 1.0, 0.0, 0.0);
-		glTranslatef(0.0, 0.0, -1.0);
-		gluCylinder(obj, 0.2, 0.2, 0.8, 30, 30);
+		glTranslatef(0.0, 0.0, -1.5);
+		gluCylinder(obj, kominR1, kominR2, kominH, 30, 30);
 
 		glPopMatrix();
 		// end --- komin-------------
+
+	// walec
+		glPushMatrix();
+		glTranslatef(-1.0, 0.2, 0.0);
+		glRotatef(90, 0.0, 1.0, 0.0);
+		gluCylinder(obj, walecR1, walecR2, walecH, 30, 30);
+		glPopMatrix();
+
+	// stozek na przodzie
+		glPushMatrix();
+		glTranslatef(0.8, 0.2, 0.0);
+		glRotatef(90, 0.0, 1.0, 0.0);
+		glutSolidCone(stozekR, stozekH, 30, 30);
+		glPopMatrix();
 
 	// prostopadloscian--------------
 		glPushMatrix();
 		glMaterialfv(GL_FRONT, GL_DIFFUSE, torus_diffuse);
 		
 		glTranslatef(0.0, -0.5, 0.0);
-		glScalef(2.0, 1.0, 1.0);
+		glScalef(xProst, yProst, zProst);
 		glutSolidCube(1.0);
 		glPopMatrix();
 
 	// kola
 		glPushMatrix();
 		
-		drawWheel(1.0, -1.0, 0.45, 0.4, 0.5);
+		drawWheel(1.0, -0.5, 0.45, 0.4);
 		glPopMatrix();
 	glPopMatrix();
 
 }
 
-void Lokomotywa::drawWheel(GLfloat x, GLfloat y, GLfloat z, GLdouble innerradius, GLdouble outerradius)
+void Lokomotywa::drawWheel(GLfloat x, GLfloat y, GLfloat z, GLdouble innerradius)
 {
 	GLUquadricObj *obj = gluNewQuadric();
 	glPushMatrix();

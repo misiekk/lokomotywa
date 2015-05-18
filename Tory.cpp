@@ -15,7 +15,6 @@ Tory::~Tory()
 void Tory::drawTory()
 {
 	GLUquadricObj *obj = gluNewQuadric();
-
 	
 	glPushMatrix();
 
