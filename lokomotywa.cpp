@@ -143,6 +143,7 @@ void Lokomotywa::move()
 	glEnd();*/
 	glDisable(GL_FOG);
 	//glutSolidSphere(3.0, 30, 30);
+	clouds();
 }
 
 GLfloat Lokomotywa::getNextWheelXCord(int i, GLfloat radius)
@@ -159,4 +160,18 @@ GLfloat Lokomotywa::getNextWheelYCord(int i, GLfloat radius)
 	GLfloat dFI = 45;
 	cordY = (GLfloat)radius*sin(M_PI*i*dFI / 180.0);
 	return cordY;
+}
+
+void Lokomotywa::clouds()
+{
+	glPushMatrix();
+	glDisable(GL_LIGHTING);
+	glColor4f(1.0, 1.0, 1.0, cloudAlpha);
+	glTranslatef(-1.0, 0.2, 0.0);
+	glRotatef(90, 0.0, 1.0, 0.0);
+	glutSolidSphere(0.5, 30, 30);
+	glPopMatrix();
+	glEnable(GL_LIGHTING);
+	if(cloudAlpha >= 0)
+		cloudAlpha -= 0.01;
 }

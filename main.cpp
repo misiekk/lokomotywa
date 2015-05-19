@@ -61,7 +61,7 @@ void displayLokomotywa()
 {
 	lok->draw();
 	lok->move();
-	
+	std::cout << lok->getAlpha() << std::endl;
 }
 
 void sky()
@@ -201,6 +201,9 @@ int main(int argc, char** argv)
 
 	glutCreateWindow("Lokomotywa - GKOM, Piotr Misiowiec");
 	
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_BLEND);
+
 	glutDisplayFunc(display);
 	glutReshapeFunc(reshape);
 	glutIdleFunc(display);

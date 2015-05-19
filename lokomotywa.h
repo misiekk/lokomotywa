@@ -14,12 +14,16 @@ public:
 	void move();
 	GLfloat getNextWheelXCord(int i, GLfloat radius);
 	GLfloat getNextWheelYCord(int i, GLfloat radius);
+	void clouds();
+	GLfloat inline getAlpha() { return this->cloudAlpha; }
 private:
 	// promien toru lokomotywy
 	const float R = 5.5;
 	// wspolrzedne
 	GLfloat x = 0.0, z = -4.0;
 	GLfloat alfa = 0.0;
+	GLfloat cloudUp = 0.0;
+	GLfloat cloudAlpha = 1.0;
 	
 	// wskazówki jakoœci generacji mg³y
 	GLint fog_hint = GL_DONT_CARE;
