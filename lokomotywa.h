@@ -3,6 +3,7 @@
 #include "glut.h"
 #include <iostream>
 #include <math.h>
+#include "Effects.h"
 
 
 class Lokomotywa
@@ -14,8 +15,9 @@ public:
 	void move();
 	GLfloat getNextWheelXCord(int i, GLfloat radius);
 	GLfloat getNextWheelYCord(int i, GLfloat radius);
-	void clouds();
-	GLfloat inline getAlpha() { return this->cloudAlpha; }
+	
+	inline GLfloat getChimneyX() { return x; }
+	inline GLfloat getChimneyZ() { return z; }
 private:
 	// promien toru lokomotywy
 	const float R = 5.5;
@@ -23,7 +25,8 @@ private:
 	GLfloat x = 0.0, z = -4.0;
 	GLfloat alfa = 0.0;
 	GLfloat cloudUp = 0.0;
-	GLfloat cloudAlpha = 1.0;
+	
+	int lapNumber = 0;
 	
 	// wskazówki jakoœci generacji mg³y
 	GLint fog_hint = GL_DONT_CARE;
@@ -34,4 +37,6 @@ private:
 	GLfloat fog_density = 0.5;
 	// rodzaj mg³y
 	GLfloat fog_mode = GL_LINEAR;
+
+	Effects *effect;
 };

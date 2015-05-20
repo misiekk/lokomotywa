@@ -61,7 +61,7 @@ void displayLokomotywa()
 {
 	lok->draw();
 	lok->move();
-	std::cout << lok->getAlpha() << std::endl;
+	
 }
 
 void sky()

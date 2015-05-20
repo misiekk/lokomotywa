@@ -79,11 +79,13 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Effects.cpp" />
     <ClCompile Include="lokomotywa.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Tory.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Effects.h" />
     <ClInclude Include="lokomotywa.h" />
     <ClInclude Include="Tory.h" />
   </ItemGroup>
