@@ -125,10 +125,24 @@ void Lokomotywa::move()
 	//{
 		//for (int i = 0; i < 5; i++)
 		//{
-	if (effect->getCounter() < 10000)
+
+	if (effect->getsmokeNumber() < 2)
 	{
+		std::cout << "jestem1 \n";
 		effect->smoke(this->getChimneyX(), this->getChimneyZ());
-		effect->incrementCounter();
+		if (effect->getSmokeAlpha() <= 0.05)
+		{
+			std::cout << "jestem2 \n";
+			effect->incrementsmokeNumber();
+			effect->setSmokeAlphaToOne();
+		}
+	}
+		/*if (effect->getCounter() < -10000)
+		{
+			effect->smoke(this->getChimneyX(), this->getChimneyZ());
+			effect->incrementCounter();
+		}
+		//if (effect->getCounter() >= 10000) effect->incrementsmokeNumber();
 	}
 
 		//}

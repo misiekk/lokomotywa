@@ -20,6 +20,19 @@ void Effects::smoke(GLfloat x, GLfloat z)
 	glutSolidSphere(0.5, 30, 30);
 	glPopMatrix();
 	glEnable(GL_LIGHTING);
-	/*if (smokeAlpha >= 0)
-		smokeAlpha -= 0.01;*/
+	if (smokeAlpha >= 0 && smokeDown)
+	{
+		smokeAlpha -= 0.01;
+		if (smokeAlpha < 0) smokeUp = true;
+	}
+	if (smokeUp)
+	{
+		smokeDown = false;
+		smokeAlpha += 0.01;
+		if (smokeAlpha > 1.0)
+		{
+			smokeDown = true;
+			smokeUp = false;
+		}
+	}
 }
