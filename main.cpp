@@ -19,7 +19,7 @@ GLdouble centerx = 0;
 GLdouble centery = 0;
 GLdouble centerz = 0;
 
-bool readyToGo = false;
+bool readyToGo = true;
 
 void sleep(unsigned int mseconds)
 {
@@ -60,7 +60,11 @@ void init()			// devil/openil (obsluga tesktur), glm  (matematyka), glulookat (s
 void displayLokomotywa()
 {
 	lok->draw();
-	lok->move();
+	if (readyToGo)
+	{
+		lok->move();
+	}
+	
 	
 }
 

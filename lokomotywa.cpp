@@ -62,6 +62,15 @@ void Lokomotywa::draw()
 		glutSolidCone(stozekR, stozekH, 30, 30);
 		glPopMatrix();
 
+	// dysk zamykajacy ciuchcie
+		glPushMatrix();
+		
+		
+		glTranslatef(-1.0, 0.2, 0.0);
+		glRotatef(90, 0.0, 1.0, 0.0);
+		gluDisk(obj, 0, 0.5, 30, 2);
+		glPopMatrix();
+
 	// prostopadloscian--------------
 		glPushMatrix();
 		glMaterialfv(GL_FRONT, GL_DIFFUSE, torus_diffuse);
@@ -74,7 +83,16 @@ void Lokomotywa::draw()
 	// kola
 		glPushMatrix();
 		
+		// prawa strona
 		drawWheel(1.0, -0.5, 0.45, 0.4);
+		drawWheel(0.1, -0.5, 0.45, 0.4);
+		drawWheel(-0.8, -0.5, 0.45, 0.4);
+		
+		// lewa strona
+		drawWheel(1.0, -0.5, -0.6, 0.4);
+		drawWheel(0.1, -0.5, -0.6, 0.4);
+		drawWheel(-0.8, -0.5, -0.6, 0.4);
+		
 		glPopMatrix();
 	glPopMatrix();
 
@@ -86,7 +104,7 @@ void Lokomotywa::drawWheel(GLfloat x, GLfloat y, GLfloat z, GLdouble innerradius
 	glPushMatrix();
 	
 	glTranslatef(x, y, z);
-	glRotatef(-this->alfa * 3, 0.0, 0.0, 1.0);
+	glRotatef(-this->alfa * 4, 0.0, 0.0, 1.0);
 	glDisable(GL_LIGHTING);
 	for (int i = 0; i < 4; i++)
 	{
@@ -121,20 +139,29 @@ void Lokomotywa::move()
 		lapNumber++;
 	}
 
-	//if (lapNumber == 2)
-	//{
-		//for (int i = 0; i < 5; i++)
-		//{
-
-	if (effect->getsmokeNumber() < 2)
+	if (lapNumber == 2 || lap)
 	{
-		std::cout << "jestem1 \n";
-		effect->smoke(this->getChimneyX(), this->getChimneyZ());
-		if (effect->getSmokeAlpha() <= 0.05)
+		lap = true;
+		
+		if (effect->getsmokeNumber() < 5)
 		{
-			std::cout << "jestem2 \n";
-			effect->incrementsmokeNumber();
-			effect->setSmokeAlphaToOne();
+			//std::cout << "jestem1 \n";
+			effect->smoke(this->getChimneyX(), this->getChimneyZ());
+			if (effect->getSmokeAlpha() <= 0.05)
+			{
+				//std::cout << "jestem2 \n";
+				effect->incrementsmokeNumber();
+				effect->setSmokeAlphaToOne();
+				effect->setDefaultYSmoke();
+				effect->setDefaultRSmoke();
+			}
+		}
+		else
+		{
+			//std::cout << "else \n";
+			lap = false;
+			lapNumber = 0;
+			effect->setsmokeNumber();
 		}
 	}
 		/*if (effect->getCounter() < -10000)

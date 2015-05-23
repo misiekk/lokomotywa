@@ -27,6 +27,7 @@ private:
 	GLfloat cloudUp = 0.0;
 	
 	int lapNumber = 0;
+	bool lap = false;
 	
 	// wskazówki jakoœci generacji mg³y
 	GLint fog_hint = GL_DONT_CARE;
