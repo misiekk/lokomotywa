@@ -1,16 +1,21 @@
-﻿Build started 2015-05-23 19:05:44.
+﻿Build started 2015-05-25 00:11:19.
      1>Project "E:\PW\GKOM\opengl\lokomotywa\lokomotywa.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         D:\Programy\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt lokomotywa.cpp
-         lokomotywa.cpp
-       Link:
-         D:\Programy\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\PW\GKOM\opengl\lokomotywa\Debug\lokomotywa.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"E:\PW\GKOM\opengl\lokomotywa\Debug\lokomotywa.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\PW\GKOM\opengl\lokomotywa\Debug\lokomotywa.lib" /MACHINE:X86 Debug\Effects.obj
-         Debug\lokomotywa.obj
-         Debug\main.obj
-         Debug\Tory.obj
-         lokomotywa.vcxproj -> E:\PW\GKOM\opengl\lokomotywa\Debug\lokomotywa.exe
-     1>Done Building Project "E:\PW\GKOM\opengl\lokomotywa\lokomotywa.vcxproj" (Build target(s)).
+         D:\Programy\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
+         main.cpp
+     1>e:\pw\gkom\opengl\lokomotywa\main.cpp(10): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>e:\pw\gkom\opengl\lokomotywa\main.cpp(10): error C2556: 'int ilInit(void)' : overloaded function differs only by return type from 'void ilInit(void)'
+                 e:\pw\gkom\opengl\lokomotywa\devil-1.7.8\include\il\il.h(575) : see declaration of 'ilInit'
+     1>e:\pw\gkom\opengl\lokomotywa\main.cpp(10): error C2373: 'ilInit' : redefinition; different type modifiers
+                 e:\pw\gkom\opengl\lokomotywa\devil-1.7.8\include\il\il.h(575) : see declaration of 'ilInit'
+     1>e:\pw\gkom\opengl\lokomotywa\main.cpp(11): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>e:\pw\gkom\opengl\lokomotywa\main.cpp(11): error C2365: 'ilLoadImage' : redefinition; previous definition was 'function'
+                 e:\pw\gkom\opengl\lokomotywa\devil-1.7.8\include\il\il.h(586) : see declaration of 'ilLoadImage'
+     1>e:\pw\gkom\opengl\lokomotywa\main.cpp(11): error C2440: 'initializing' : cannot convert from 'const char [8]' to 'int'
+                 There is no context in which this conversion is possible
+     1>e:\pw\gkom\opengl\lokomotywa\main.cpp(101): error C3861: 'skyTexture': identifier not found
+     1>Done Building Project "E:\PW\GKOM\opengl\lokomotywa\lokomotywa.vcxproj" (Build target(s)) -- FAILED.
 
-Build succeeded.
+Build FAILED.
 
-Time Elapsed 00:00:01.90
+Time Elapsed 00:00:04.83
