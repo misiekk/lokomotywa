@@ -1,52 +1,19 @@
+/*
+plik DevIL.dll do C:\Windows\SysWOW64 i wtedy dziala
+
+#pragma comment(lib, "DevIL.lib")
+#pragma comment(lib, "ILU.lib")
+#pragma comment(lib, "ILUT.lib")
+*/
 #include <Windows.h>
 #include <time.h>
 #include "GLUT.H"
 #include <gl\GL.h>
 #include "lokomotywa.h"
 #include "Tory.h"
-#include "devil-1.7.8\include\IL\il.h"
+#include "il.h"
 
-GLint tex_list[1];
-ilInit();
-ilLoadImage("sky.jpg");
-#define SKYTEX tex_list[0]
-
-
-GLubyte tekstura[8][8][3] =
-{
-	{
-		{ 250, 0, 0 }, { 250, 0, 0 }, { 250, 0, 0 }, { 250, 0, 0 },
-		{ 230, 230, 230 }, { 230, 230, 230 }, { 230, 230, 230 }, { 230, 230, 230 }
-	},
-	{
-		{ 250, 0, 0 }, { 250, 0, 0 }, { 250, 0, 0 }, { 250, 0, 0 },
-		{ 230, 230, 230 }, { 230, 230, 230 }, { 230, 230, 230 }, { 230, 230, 230 }
-	},
-	{
-		{ 250, 0, 0 }, { 250, 0, 0 }, { 250, 0, 0 }, { 250, 0, 0 },
-		{ 230, 230, 230 }, { 230, 230, 230 }, { 230, 230, 230 }, { 230, 230, 230 }
-	},
-	{
-		{ 250, 0, 0 }, { 250, 0, 0 }, { 250, 0, 0 }, { 250, 0, 0 },
-		{ 230, 230, 230 }, { 230, 230, 230 }, { 230, 230, 230 }, { 230, 230, 230 }
-	},
-	{
-		{ 0, 250, 0 }, { 0, 250, 0 }, { 0, 250, 0 }, { 0, 250, 0 },
-		{ 0, 0, 250 }, { 0, 0, 250 }, { 0, 0, 250 }, { 0, 0, 250 }
-	},
-	{
-		{ 0, 250, 0 }, { 0, 250, 0 }, { 0, 250, 0 }, { 0, 250, 0 },
-		{ 0, 0, 250 }, { 0, 0, 250 }, { 0, 0, 250 }, { 0, 0, 250 }
-	},
-	{
-		{ 0, 250, 0 }, { 0, 250, 0 }, { 0, 250, 0 }, { 0, 250, 0 },
-		{ 0, 0, 250 }, { 0, 0, 250 }, { 0, 0, 250 }, { 0, 0, 250 }
-	},
-	{
-		{ 0, 250, 0 }, { 0, 250, 0 }, { 0, 250, 0 }, { 0, 250, 0 },
-		{ 0, 0, 250 }, { 0, 0, 250 }, { 0, 0, 250 }, { 0, 0, 250 }
-	}
-};
+GLuint texture[2];
 
 Lokomotywa *lok;
 Tory *tory;
@@ -97,9 +64,6 @@ void init()			// devil/openil (obsluga tesktur), glm  (matematyka), glulookat (s
 	glDepthFunc(GL_LESS);
 	glEnable(GL_DEPTH_TEST);
 
-	glNewList(SKYTEX, GL_COMPILE);
-		skyTexture();
-	glEndList();
 }
 
 void displayLokomotywa()
@@ -109,7 +73,6 @@ void displayLokomotywa()
 	{
 		lok->move();
 	}
-	
 	
 }
 
@@ -128,51 +91,109 @@ void sky()
 	glPopMatrix();
 }
 
-void skyTexture()
+GLuint loadImage(const char* filename)
 {
-	/*GLint texture;
-	texture = SOIL_load_OGL_texture
-		(
-		"sky.jpg",
-		SOIL_LOAD_AUTO,
-		SOIL_CREATE_NEW_ID,
-		SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
-		);*/
+	ILuint texid; /* ILuint is a 32bit unsigned integer.
+				  Variable texid will be used to store image name. */
+	ILboolean success;
+	GLuint image;
+	int finished;
+	if (ilGetInteger(IL_VERSION_NUM) < IL_VERSION)
+	{
+		std::cout << "IL VERSION PROBLEM! \n";
+		return -1;
+	}
+
+	ilInit();
+	ilGenImages(1, &texid); /* Generation of one image name */
+	ilBindImage(texid); /* Binding of image name */
+	success = ilLoadImage((const ILstring)filename); 
+	if (success) 
+	{
+		success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE); /* Convert every colour component into
+															unsigned byte. If your image contains alpha channel you can replace IL_RGB with IL_RGBA */
+		if (!success)
+		{
+			std::cout << "Texture error! \n";
+			return -1;
+		}
+
+		glGenTextures(1, &image); /* Texture name generation */
+		glBindTexture(GL_TEXTURE_2D, image); /* Binding of texture name */
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_BPP), ilGetInteger(IL_IMAGE_WIDTH),
+			ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE,
+			ilGetData()); 
+	}
+	else
+	{
+		std::cout << "Texture error! \n";
+		return -1;
+	}
+	ilDeleteImages(1, &texid); /* Because we have already copied image data into texture data
+							   we can release memory used by image. */
 	
-	GLint
-		s_vec[4] = { 200, 0, 0, 0 },
-		t_vec[4] = { 0, 0, 200, 0 };
-
-	glEnable(GL_TEXTURE_GEN_S);
-	glEnable(GL_TEXTURE_GEN_T);
-
-	glTexGeniv(GL_S, GL_OBJECT_PLANE, s_vec);
-	glTexGeniv(GL_T, GL_OBJECT_PLANE, t_vec);
-
-	//glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, white_amb_col);
-	//glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, white_dif_col);
-	glEnable(GL_TEXTURE_2D);
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, 8, 8, 0, GL_RGB, GL_UNSIGNED_BYTE, tekstura);
-	glCallList(SKYTEX);
-	glBegin(GL_QUADS);
-	glNormal3f(0, 1, 0);
-	glVertex3f(0, 0, 0);
-	glVertex3f(0, 0, 1);
-	glVertex3f(1, 0, 1);
-	glVertex3f(1, 0, 0);
-	glEnd();
-	//glBindTexture(GL_TEXTURE_2D, texture);
-	glDisable(GL_TEXTURE_2D);
-
-	glDisable(GL_TEXTURE_GEN_S);
-	glDisable(GL_TEXTURE_GEN_T);
+	return image;
 }
 
+void skyTexture()
+{
+	glPushMatrix();
+	//glRotatef(90, 0.0, 0.0, 1.0);
+	glTranslatef(-100.0, 0.0, 0.0);
+		glEnable(GL_TEXTURE_2D);
+			glBegin(GL_QUADS);
+			glTexCoord2i(0, 0); glVertex3i(0, 0, -20);
+			glTexCoord2i(0, 1); glVertex3i(0, 133, -20);
+			glTexCoord2i(1, 1); glVertex3i(200, 133, -20);
+			glTexCoord2i(1, 0); glVertex3i(200, 0, -20);
+			glEnd();
+		glBindTexture(GL_TEXTURE_2D, texture[1]);
+		glDisable(GL_TEXTURE_2D);
+	glPopMatrix();
+}
+
+void groundTexture()
+{
+	glPushMatrix();
+	//glRotatef(90, 0.0, 0.0, 1.0);
+	glTranslatef(-65.0, 0.0, -47.5);
+	glEnable(GL_TEXTURE_2D);
+	glBegin(GL_QUADS);
+	glTexCoord2i(0, 0); glVertex3f(0, -0.1, 0);
+	glTexCoord2i(0, 1); glVertex3f(0, -0.1, 95);
+	glTexCoord2i(1, 1); glVertex3f(130, -0.1, 95);
+	glTexCoord2i(1, 0); glVertex3f(130, -0.1, 0);
+	glEnd();
+	glBindTexture(GL_TEXTURE_2D, texture[0]);
+	glDisable(GL_TEXTURE_2D);
+	glPopMatrix();
+}
+
+
+void textureSkyInit()
+{
+	const char* fileSky = "sky.jpg";
+	texture[0] = loadImage(fileSky);
+}
+
+void textureGroundInit()
+{
+	const char* fileGround = "zwir2.jpg";
+	texture[1] = loadImage(fileGround);
+}
+
+void textureInit()
+{
+	textureGroundInit();
+	textureSkyInit();
+}
 
 void display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(0.0, 0.5, 0.0, 0.5);
+	glClearColor(0.0, 0.0, 0.0, 1.0);
 	
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -194,23 +215,22 @@ void display()
 		glRotatef(1, 0.0, 1.0, 0.0);
 		glTranslatef(0.1, 0.0, 0.0);
 	}*/
-	sky();
+	//sky();
 	displayLokomotywa();
 	tory->drawTory();
-	
+	skyTexture();
+	groundTexture();
 	
 	glMatrixMode(GL_PROJECTION);
 	
 	glPopMatrix();
 
+
+
 	glFlush();
 	glutSwapBuffers();
 }
 
-void displayIdle()
-{
-
-}
 
 void reshape(GLsizei w, GLsizei h)
 {
@@ -293,11 +313,11 @@ int main(int argc, char** argv)
 	glutReshapeFunc(reshape);
 	glutIdleFunc(display);
 	glutKeyboardFunc(keyboardStart);
-	
-	
-	init();
+	textureInit();
 
+	init();
 	glutMainLoop();
 
 	return 0;
 }
+
