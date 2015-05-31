@@ -30,7 +30,7 @@ private:
 	// defaultowa wspolrzedna dymu (nad kominem)
 	GLfloat y = 2.5;
 	// defaultowy promien kuli reprezentujacej oblok dymu
-	GLdouble R = 0.3;
+	GLdouble R = 0.2;
 
 };
 

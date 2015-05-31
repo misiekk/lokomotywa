@@ -1,6 +1,17 @@
 #include "lokomotywa.h"
 #define M_PI 3.1415
 
+const GLfloat ChromeAmbient[4] = { 0.25, 0.25, 0.25, 1.0 };
+const GLfloat ChromeDiffuse[4] = { 0.40, 0.40, 0.40, 1.0 };
+const GLfloat ChromeSpecular[4] = {	0.77, 0.77, 0.77, 1.0 };
+const GLfloat ChromeShininess = 76.0;
+
+
+const GLfloat * ambient = ChromeAmbient;
+const GLfloat * diffuse = ChromeDiffuse;
+const GLfloat * specular = ChromeSpecular;
+GLfloat shininess = ChromeShininess;
+
 Lokomotywa::Lokomotywa()
 {
 	std::cout << "Lokomotywa loading...";
@@ -11,7 +22,7 @@ void Lokomotywa::draw()
 {
 	//std::cout << "draw \n";
 	GLUquadricObj *obj = gluNewQuadric();
-	GLfloat torus_diffuse[] = { 0.0, 1.0, 0.0, 1.0 };
+	GLfloat komin_diffuse[4] = { 1.0, 1.0, 1.0, 0.8 };
 
 
 	//wymiary czesci skladowych
@@ -40,7 +51,12 @@ void Lokomotywa::draw()
 	glRotatef(this->alfa, 0.0, 1.0, 0.0);
 	// komin-------------
 		glPushMatrix();
-		glMaterialfv(GL_FRONT, GL_DIFFUSE, torus_diffuse);
+		glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, ambient);
+		glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuse);
+		glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specular);
+		glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shininess);
+
+		//glMaterialfv(GL_FRONT, GL_DIFFUSE, komin_diffuse);
 		glRotatef(90, 1.0, 0.0, 0.0);
 		glTranslatef(0.0, 0.0, -1.5);
 		gluCylinder(obj, kominR1, kominR2, kominH, 30, 30);
@@ -64,8 +80,6 @@ void Lokomotywa::draw()
 
 	// dysk zamykajacy ciuchcie
 		glPushMatrix();
-		
-		
 		glTranslatef(-1.0, 0.2, 0.0);
 		glRotatef(90, 0.0, 1.0, 0.0);
 		gluDisk(obj, 0, 0.5, 30, 2);
@@ -73,8 +87,10 @@ void Lokomotywa::draw()
 
 	// prostopadloscian--------------
 		glPushMatrix();
-		glMaterialfv(GL_FRONT, GL_DIFFUSE, torus_diffuse);
-		
+		glMaterialfv(GL_FRONT, GL_DIFFUSE, komin_diffuse);
+		//glEnable(GL_LIGHTING);
+		glColor3f(0.0, 0.0, 1.0);
+		//glDisable(GL_LIGHTING);
 		glTranslatef(0.0, -0.5, 0.0);
 		glScalef(xProst, yProst, zProst);
 		glutSolidCube(1.0);
@@ -132,11 +148,12 @@ void Lokomotywa::move()
 	// z = rsinFI
 	x = (GLfloat)R*sin(M_PI*alfa/180.0);
 	z = (GLfloat)R*cos(M_PI*alfa / 180.0);
-	alfa += 1.0;
+	alfa += dalfa;
 	if (alfa >= 360.0)
 	{
 		alfa = 0.0;
 		lapNumber++;
+		lapsToGo--;
 	}
 
 	if (lapNumber == 2 || lap)

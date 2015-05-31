@@ -1,9 +1,10 @@
-﻿Build started 2015-05-26 23:07:06.
+﻿Build started 2015-06-01 00:09:04.
      1>Project "E:\PW\GKOM\opengl\lokomotywa\lokomotywa.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         D:\Programy\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IE:\PW\GKOM\opengl\lokomotywa\devil\include\IL /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
-         main.cpp
-     1>e:\pw\gkom\opengl\lokomotywa\main.cpp(100): warning C4101: 'finished' : unreferenced local variable
+         D:\Programy\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IE:\PW\GKOM\opengl\lokomotywa\devil\include\IL /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Effects.cpp lokomotywa.cpp
+         lokomotywa.cpp
+         Effects.cpp
+         Generating Code...
        Link:
          D:\Programy\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\PW\GKOM\opengl\lokomotywa\Debug\lokomotywa.exe" /INCREMENTAL /NOLOGO /LIBPATH:E:\PW\GKOM\opengl\lokomotywa\devil\lib DevIL.lib ILU.lib ILUT.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"E:\PW\GKOM\opengl\lokomotywa\Debug\lokomotywa.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\PW\GKOM\opengl\lokomotywa\Debug\lokomotywa.lib" /MACHINE:X86 Debug\Effects.obj
          Debug\lokomotywa.obj
@@ -14,4 +15,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:03.66
+Time Elapsed 00:00:02.96

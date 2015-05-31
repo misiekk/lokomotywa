@@ -19,10 +19,12 @@ Lokomotywa *lok;
 Tory *tory;
 int width, height;
 
+
+
 // polozenie obserwatora
-GLdouble eyex = 0;
-GLdouble eyey = 5;
-GLdouble eyez = 5;
+GLdouble eyex = 2;
+GLdouble eyey = 4;
+GLdouble eyez = 7;
 
 // punkt w ktorego kierunku jest zwrocony obserwator
 GLdouble centerx = 0;
@@ -31,12 +33,6 @@ GLdouble centerz = 0;
 
 bool readyToGo = true;
 
-void sleep(unsigned int mseconds)
-{
-	clock_t goal = mseconds + clock();
-	while (goal > clock());
-}
-
 
 void init()			// devil/openil (obsluga tesktur), glm  (matematyka), glulookat (sterowanie polem widzenia)
 {
@@ -44,7 +40,7 @@ void init()			// devil/openil (obsluga tesktur), glm  (matematyka), glulookat (s
 	tory = new Tory();
 	GLfloat mat_ambient[] = { 1.0, 1.0, 1.0, 0.5 };
 	GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-	GLfloat light_position[] = { 0.0, 5.0, 10.0, 0.5 };
+	GLfloat light_position[] = { 2.0, 5.0, 5.0, 0.5 };
 	GLfloat lm_ambient[] = { 0.4, 0.4, 0.4, 1.0 };
 
 	glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
@@ -69,11 +65,10 @@ void init()			// devil/openil (obsluga tesktur), glm  (matematyka), glulookat (s
 void displayLokomotywa()
 {
 	lok->draw();
-	if (readyToGo)
+	if (readyToGo && lok->getLapsToGo() > 0)
 	{
 		lok->move();
 	}
-	
 }
 
 void sky()
@@ -224,9 +219,6 @@ void display()
 	glMatrixMode(GL_PROJECTION);
 	
 	glPopMatrix();
-
-
-
 	glFlush();
 	glutSwapBuffers();
 }
@@ -256,13 +248,19 @@ void reshape(GLsizei w, GLsizei h)
 		glMatrixMode(GL_MODELVIEW);
 	}
 }
-/*
-Start/zatrzymanie animacji
-*/
+
 void keyboardStart(unsigned char key, int x, int y)
 {
-	if (key == 32 && !readyToGo) readyToGo = true;
-	else if (key == 32 && readyToGo) readyToGo = false;
+	// q
+	if (key == 113 && !readyToGo)
+	{
+		readyToGo = true;
+		if (lok->getLapsToGo() == 0)
+			lok->setLapsToGo(4);
+	}
+	else if (key == 113 && readyToGo)
+		readyToGo = false;
+
 	
 	// sterowanie kamera
 	// TODO: ograniczenia
@@ -290,9 +288,24 @@ void keyboardStart(unsigned char key, int x, int y)
 	{
 		eyez -= 0.1;
 	}
-
 	// odrysowanie okna
 	reshape(glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
+}
+
+void setVelocity(int key, int x, int y)
+{
+	switch (key)
+	{
+	case GLUT_KEY_UP:
+		if (lok->getdAlfa() < 2.0)
+			lok->incrementAlfa();
+		break;
+
+	case GLUT_KEY_DOWN:
+		if (lok->getdAlfa() >= 0.0)
+			lok->decrementAlfa();
+		break;
+	}
 }
 
 int main(int argc, char** argv)
@@ -313,6 +326,7 @@ int main(int argc, char** argv)
 	glutReshapeFunc(reshape);
 	glutIdleFunc(display);
 	glutKeyboardFunc(keyboardStart);
+	glutSpecialFunc(setVelocity);
 	textureInit();
 
 	init();
