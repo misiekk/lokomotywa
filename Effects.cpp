@@ -1,6 +1,6 @@
 #include "Effects.h"
 
-const GLfloat SmokeAmbient[4] = { 0.25, 0.25, 0.25, 1.0 };
+const GLfloat SmokeAmbient[4] = { 0.25, 0.25, 0.25, 0.5 };
 const GLfloat SmokeDiffuse[4] = { 0.400000, 0.400000, 0.400000, 1.0 };
 const GLfloat SmokeSpecular[4] = { 0.77, 0.77, 0.77, 1.0 };
 const GLfloat SmokeShininess = 0;
@@ -24,10 +24,10 @@ Effects::~Effects()
 void Effects::smoke(GLfloat x, GLfloat z)
 {
 	glPushMatrix();
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, ambientS);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuseS);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specularS);
-	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shininessS);
+	//glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, ambientS);
+	//glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuseS);
+	//glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specularS);
+	//glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shininessS);
 	//glDisable(GL_LIGHTING);
 	glColor4f(1.0, 1.0, 1.0, smokeAlpha);
 	glTranslatef(x, this->y, z);
@@ -38,7 +38,7 @@ void Effects::smoke(GLfloat x, GLfloat z)
 	{
 		smokeAlpha -= 0.01;
 		y += 0.01;
-		R += 0.01;
+		R += 0.005;
 		if (smokeAlpha < 0) smokeUp = true;
 	}
 	if (smokeUp)

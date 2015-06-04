@@ -22,8 +22,8 @@ int width, height;
 
 
 // polozenie obserwatora
-GLdouble eyex = 2;
-GLdouble eyey = 4;
+GLdouble eyex = 0;
+GLdouble eyey = 2;
 GLdouble eyez = 7;
 
 // punkt w ktorego kierunku jest zwrocony obserwator
@@ -41,11 +41,11 @@ void init()			// devil/openil (obsluga tesktur), glm  (matematyka), glulookat (s
 	GLfloat mat_ambient[] = { 1.0, 1.0, 1.0, 0.5 };
 	GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
 	GLfloat light_position[] = { 2.0, 5.0, 5.0, 0.5 };
-	GLfloat lm_ambient[] = { 0.4, 0.4, 0.4, 1.0 };
+	GLfloat lm_ambient[] = { 1.0, 1.0, 1.0, 1.0 };
 
-	glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
-	glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
-	glMaterialf(GL_FRONT, GL_SHININESS, 20.0);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular);
+	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 20.0);
 	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lm_ambient);
 
@@ -69,6 +69,8 @@ void displayLokomotywa()
 	{
 		lok->move();
 	}
+	if (lok->getLapsToGo() == 0)
+		readyToGo = false;
 }
 
 void sky()
@@ -137,15 +139,15 @@ void skyTexture()
 	glPushMatrix();
 	//glRotatef(90, 0.0, 0.0, 1.0);
 	glTranslatef(-100.0, 0.0, 0.0);
-		glEnable(GL_TEXTURE_2D);
-			glBegin(GL_QUADS);
-			glTexCoord2i(0, 0); glVertex3i(0, 0, -20);
-			glTexCoord2i(0, 1); glVertex3i(0, 133, -20);
-			glTexCoord2i(1, 1); glVertex3i(200, 133, -20);
-			glTexCoord2i(1, 0); glVertex3i(200, 0, -20);
-			glEnd();
-		glBindTexture(GL_TEXTURE_2D, texture[1]);
-		glDisable(GL_TEXTURE_2D);
+	glEnable(GL_TEXTURE_2D);
+	glBegin(GL_QUADS);
+	glTexCoord2i(0, 0); glVertex3i(-200, 0, -20);
+	glTexCoord2i(0, 1); glVertex3i(-200, 133, -20);
+	glTexCoord2i(1, 1); glVertex3i(200, 133, -20);
+	glTexCoord2i(1, 0); glVertex3i(200, 0, -20);
+	glEnd();
+	glBindTexture(GL_TEXTURE_2D, texture[1]);
+	glDisable(GL_TEXTURE_2D);
 	glPopMatrix();
 }
 
@@ -156,10 +158,10 @@ void groundTexture()
 	glTranslatef(-65.0, 0.0, -47.5);
 	glEnable(GL_TEXTURE_2D);
 	glBegin(GL_QUADS);
-	glTexCoord2i(0, 0); glVertex3f(0, -0.1, 0);
-	glTexCoord2i(0, 1); glVertex3f(0, -0.1, 95);
-	glTexCoord2i(1, 1); glVertex3f(130, -0.1, 95);
-	glTexCoord2i(1, 0); glVertex3f(130, -0.1, 0);
+	glTexCoord2i(0, 0); glVertex3f(-160, -0.1, 0);
+	glTexCoord2i(0, 1); glVertex3f(-160, -0.1, 125);
+	glTexCoord2i(1, 1); glVertex3f(160, -0.1, 125);
+	glTexCoord2i(1, 0); glVertex3f(160, -0.1, 0);
 	glEnd();
 	glBindTexture(GL_TEXTURE_2D, texture[0]);
 	glDisable(GL_TEXTURE_2D);
@@ -266,27 +268,33 @@ void keyboardStart(unsigned char key, int x, int y)
 	// TODO: ograniczenia
 	if (key == 'w')
 	{
-		eyey += 0.1;
+		if (eyey < 3)
+			eyey += 0.1;
 	}
 	if (key == 's')
 	{
-		eyey -= 0.1;
+		if (eyey > 1)
+			eyey -= 0.1;
 	}
 	if (key == 'a')
 	{
-		eyex -= 0.1;
+		if (eyex > 0.0)
+			eyex -= 0.1;
 	}
 	if (key == 'd')
 	{
-		eyex += 0.1;
+		if (eyex < 1.0)
+			eyex += 0.1;
 	}
 	if (key == 'z')
 	{
-		eyez += 0.1;
+		if (eyez < 7.5)
+			eyez += 0.1;
 	}
 	if (key == 'x')
 	{
-		eyez -= 0.1;
+		if (eyez > 6.5)
+			eyez -= 0.1;
 	}
 	// odrysowanie okna
 	reshape(glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));

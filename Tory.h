@@ -5,6 +5,7 @@
 #include "glut.h"
 #include <iostream>
 #include <math.h>
+
 class Tory
 {
 public:

@@ -20,7 +20,7 @@ public:
 	inline void incrementsmokeNumber() { this->smokeNumber++; }
 	inline void setSmokeAlphaToOne() { smokeAlpha = 1.0; }
 	inline void setDefaultYSmoke() { y = 2.5; }
-	inline void setDefaultRSmoke() { R = 0.3; }
+	inline void setDefaultRSmoke() { R = 0.1; }
 private:
 	GLfloat smokeAlpha = 1.0;
 	int counter = 0;
@@ -30,7 +30,8 @@ private:
 	// defaultowa wspolrzedna dymu (nad kominem)
 	GLfloat y = 2.5;
 	// defaultowy promien kuli reprezentujacej oblok dymu
-	GLdouble R = 0.2;
+	GLdouble R = 0.1;
+
 
 };
 
