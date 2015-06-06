@@ -11,11 +11,11 @@ class Lokomotywa
 public:
 	Lokomotywa();
 	void draw();
-	void drawWheel(GLfloat x, GLfloat y, GLfloat z, GLdouble innerradius);
+	void drawWheel(GLfloat x, GLfloat y, GLfloat z, GLdouble innerradius, bool shadow);
 	void move();
 	GLfloat getNextWheelXCord(int i, GLfloat radius);
 	GLfloat getNextWheelYCord(int i, GLfloat radius);
-	
+	void generateLoco(bool shadow);
 	inline GLfloat getChimneyX() { return x; }
 	inline GLfloat getChimneyZ() { return z; }
 	inline int getLapsToGo() { return lapsToGo; }

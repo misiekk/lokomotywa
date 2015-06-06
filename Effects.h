@@ -21,6 +21,8 @@ public:
 	inline void setSmokeAlphaToOne() { smokeAlpha = 1.0; }
 	inline void setDefaultYSmoke() { y = 2.5; }
 	inline void setDefaultRSmoke() { R = 0.1; }
+
+	void generateShadowMatrix(GLfloat shadowMat[4][4], GLfloat groundplane[4], GLfloat lightpos[4]);
 private:
 	GLfloat smokeAlpha = 1.0;
 	int counter = 0;
@@ -31,7 +33,6 @@ private:
 	GLfloat y = 2.5;
 	// defaultowy promien kuli reprezentujacej oblok dymu
 	GLdouble R = 0.1;
-
 
 };
 

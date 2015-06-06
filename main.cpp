@@ -14,6 +14,7 @@ plik DevIL.dll do C:\Windows\SysWOW64 i wtedy dziala
 #include "il.h"
 
 GLuint texture[2];
+GLfloat light_position[] = { 2.0, 5.0, 10.0, 0.5 };
 
 Lokomotywa *lok;
 Tory *tory;
@@ -40,12 +41,13 @@ void init()			// devil/openil (obsluga tesktur), glm  (matematyka), glulookat (s
 	tory = new Tory();
 	GLfloat mat_ambient[] = { 1.0, 1.0, 1.0, 0.5 };
 	GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-	GLfloat light_position[] = { 2.0, 5.0, 5.0, 0.5 };
+	
 	GLfloat lm_ambient[] = { 1.0, 1.0, 1.0, 1.0 };
+	GLfloat fog[4] = { 0.1, 0.1, 0.1, 1 };
 
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular);
-	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 20.0);
+	//glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient);
+	//glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular);
+	//glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 20.0);
 	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lm_ambient);
 
@@ -59,7 +61,13 @@ void init()			// devil/openil (obsluga tesktur), glm  (matematyka), glulookat (s
 
 	glDepthFunc(GL_LESS);
 	glEnable(GL_DEPTH_TEST);
-
+	
+	glEnable(GL_FOG);
+	glFogf(GL_FOG_DENSITY, 0.004f);
+	glFogi(GL_FOG_MODE, GL_EXP);
+	glFogfv(GL_FOG_COLOR, fog);
+	glHint(GL_FOG_HINT, GL_NICEST);
+	
 }
 
 void displayLokomotywa()
@@ -190,7 +198,7 @@ void textureInit()
 void display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(0.0, 0.0, 0.0, 1.0);
+	glClearColor(0.0, 0.0, 0.0, 0.0);
 	
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -201,18 +209,8 @@ void display()
 		centerx, centery, centerz,
 		0, 1, 0);
 
-	//glTranslatef(0.1, 0.1, 0.5);
-	//glRotatef((GLfloat)frameNumber, 0.0, 1.0, 0.0);
-	
 	glMatrixMode(GL_MODELVIEW);
-	
-	// jazda po kole
-	/*if (readyToGo)
-	{
-		glRotatef(1, 0.0, 1.0, 0.0);
-		glTranslatef(0.1, 0.0, 0.0);
-	}*/
-	//sky();
+
 	displayLokomotywa();
 	tory->drawTory();
 	skyTexture();
@@ -265,35 +263,34 @@ void keyboardStart(unsigned char key, int x, int y)
 
 	
 	// sterowanie kamera
-	// TODO: ograniczenia
 	if (key == 'w')
 	{
-		if (eyey < 3)
+		//if (eyey < 3)
 			eyey += 0.1;
 	}
 	if (key == 's')
 	{
-		if (eyey > 1)
+		//if (eyey > 1)
 			eyey -= 0.1;
 	}
 	if (key == 'a')
 	{
-		if (eyex > 0.0)
+		//if (eyex > 0.0)
 			eyex -= 0.1;
 	}
 	if (key == 'd')
 	{
-		if (eyex < 1.0)
+		//if (eyex < 1.0)
 			eyex += 0.1;
 	}
 	if (key == 'z')
 	{
-		if (eyez < 7.5)
+		//if (eyez < 7.5)
 			eyez += 0.1;
 	}
 	if (key == 'x')
 	{
-		if (eyez > 6.5)
+		//if (eyez > 6.5)
 			eyez -= 0.1;
 	}
 	// odrysowanie okna
@@ -326,9 +323,9 @@ int main(int argc, char** argv)
 	glutInitWindowSize(800, 800);
 
 	glutCreateWindow("Lokomotywa - GKOM, Piotr Misiowiec");
-	
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	
 
 	glutDisplayFunc(display);
 	glutReshapeFunc(reshape);
