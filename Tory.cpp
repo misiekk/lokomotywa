@@ -21,17 +21,16 @@ void Tory::drawTory()
 	glDisable(GL_LIGHTING);
 	glColor3f(0.0, 0.0, 0.0);
 	glRotatef(90, 1, 0, 0);
-	gluDisk(obj, this->R1, this->R1 + 0.1, 50, 50);
-	gluDisk(obj, this->R2, this->R2 + 0.1, 50, 50);
+	gluDisk(obj, this->R1, this->R1 + 0.1, 80, 10);
+	gluDisk(obj, this->R2, this->R2 + 0.1, 80, 10);
 	glPopMatrix();
 	
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glVertexPointer(3, GL_FLOAT, 0, tory_xyz);
-	//glNormal3f(0.0, 0.0, 1.0);
+	glNormal3f(0.0, 0.0, 1.0);
 	glColor3f(0.0, 0.0, 0.0);
 	glLineWidth(4.0);
 	glDrawArrays(GL_LINES, 0, size);
-
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glEnable(GL_LIGHTING);
 }

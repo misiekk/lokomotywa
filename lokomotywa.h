@@ -30,21 +30,16 @@ private:
 	GLfloat x = 0.0, z = -4.0;
 	GLfloat alfa = 0.0;
 	GLfloat dalfa = 1.0;
-	GLfloat cloudUp = 0.0;
+
+	GLfloat xSmoke = 0.0,
+		zSmoke = 0.0;
+	bool nextSmoke = true;
 	
 	int lapNumber = 0,
-		lapsToGo = 4;
+		lapsToGo = 10;
 	bool lap = false;
 
-	// wskazówki jakoœci generacji mg³y
-	GLint fog_hint = GL_DONT_CARE;
-	// pocz¹tek i koniec oddzia³ywania mg³y liniowej
-	GLfloat fog_start = 0.0;
-	GLfloat fog_end = 2.0;
-	// gêstoœæ mg³y
-	GLfloat fog_density = 0.5;
-	// rodzaj mg³y
-	GLfloat fog_mode = GL_LINEAR;
+
 
 	Effects *effect;
 };

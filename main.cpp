@@ -1,10 +1,3 @@
-/*
-plik DevIL.dll do C:\Windows\SysWOW64 i wtedy dziala
-
-#pragma comment(lib, "DevIL.lib")
-#pragma comment(lib, "ILU.lib")
-#pragma comment(lib, "ILUT.lib")
-*/
 #include <Windows.h>
 #include <time.h>
 #include "GLUT.H"
@@ -21,10 +14,9 @@ Tory *tory;
 int width, height;
 
 
-
 // polozenie obserwatora
 GLdouble eyex = 0;
-GLdouble eyey = 2;
+GLdouble eyey = 3;
 GLdouble eyez = 7;
 
 // punkt w ktorego kierunku jest zwrocony obserwator
@@ -39,20 +31,13 @@ void init()			// devil/openil (obsluga tesktur), glm  (matematyka), glulookat (s
 {
 	lok = new Lokomotywa();
 	tory = new Tory();
-	GLfloat mat_ambient[] = { 1.0, 1.0, 1.0, 0.5 };
-	GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-	
-	GLfloat lm_ambient[] = { 1.0, 1.0, 1.0, 1.0 };
-	GLfloat fog[4] = { 0.1, 0.1, 0.1, 1 };
 
-	//glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient);
-	//glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular);
-	//glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 20.0);
+	GLfloat lm_ambient[] = { 1.0, 1.0, 1.0, 1.0 };
+	GLfloat fog[4] = { 0.9, 0.9, 0.9, 1 };
+
 	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lm_ambient);
-
-	//glLightf(GL_LIGHT0, GL_AMBIENT, 0.0);
-
+	
 	glShadeModel(GL_SMOOTH);
 
 	glEnable(GL_LIGHTING);
@@ -63,7 +48,7 @@ void init()			// devil/openil (obsluga tesktur), glm  (matematyka), glulookat (s
 	glEnable(GL_DEPTH_TEST);
 	
 	glEnable(GL_FOG);
-	glFogf(GL_FOG_DENSITY, 0.004f);
+	glFogf(GL_FOG_DENSITY, 0.02);
 	glFogi(GL_FOG_MODE, GL_EXP);
 	glFogfv(GL_FOG_COLOR, fog);
 	glHint(GL_FOG_HINT, GL_NICEST);
@@ -198,7 +183,8 @@ void textureInit()
 void display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(0.0, 0.0, 0.0, 0.0);
+	//glutInitDisplayMode(GLUT_RGBA | GLUT_ALPHA);
+	glClearColor(0.77, 0.77, 0.77, 1.0);
 	
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -265,32 +251,32 @@ void keyboardStart(unsigned char key, int x, int y)
 	// sterowanie kamera
 	if (key == 'w')
 	{
-		//if (eyey < 3)
+		if (eyey < 4)
 			eyey += 0.1;
 	}
 	if (key == 's')
 	{
-		//if (eyey > 1)
+		if (eyey > 1)
 			eyey -= 0.1;
 	}
 	if (key == 'a')
 	{
-		//if (eyex > 0.0)
+		if (eyex > 0.0)
 			eyex -= 0.1;
 	}
 	if (key == 'd')
 	{
-		//if (eyex < 1.0)
+		if (eyex < 1.0)
 			eyex += 0.1;
 	}
 	if (key == 'z')
 	{
-		//if (eyez < 7.5)
+		if (eyez < 7.5)
 			eyez += 0.1;
 	}
 	if (key == 'x')
 	{
-		//if (eyez > 6.5)
+		if (eyez > 6.5)
 			eyez -= 0.1;
 	}
 	// odrysowanie okna
@@ -317,7 +303,7 @@ int main(int argc, char** argv)
 {
 	glutInit(&argc, argv);
 
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);// | GLUT_ALPHA);
 
 	glutInitWindowPosition(100, 100);
 	glutInitWindowSize(800, 800);

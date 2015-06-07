@@ -19,6 +19,6 @@ private:
 	GLfloat tory_xyz[6 * size];
 	// promienie torow
 	GLdouble R1 = 5.0,		
-		R2 = 6.0;
+		R2 = 6.05;
 };
 

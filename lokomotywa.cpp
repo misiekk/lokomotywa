@@ -20,39 +20,18 @@ Lokomotywa::Lokomotywa()
 {
 	std::cout << "Lokomotywa loading...";
 	effect = new Effects();
-
-
 }
 
 void Lokomotywa::draw()
 {
 	//std::cout << "draw \n";
 	GLUquadricObj *obj = gluNewQuadric();
-	GLfloat komin_diffuse[4] = { 1.0, 1.0, 1.0, 0.8 };
 
 	effect->generateShadowMatrix(shadow_matrix, plane, light);
-	//wymiary czesci skladowych
-	//prostopadloscian podstawy lokomotywy
-	GLfloat xProst = 2.0,
-		yProst = 0.5,
-		zProst = 1.0;
-
-	// stozek
-	GLfloat stozekR = 0.5,
-		stozekH = 0.6;
-
-	// walec poziomy
-	GLfloat walecR1 = 0.5,
-		walecR2 = 0.5,
-		walecH = 1.8;
-
-	// komin
-	GLfloat kominR1 = 0.2,
-		kominR2 = 0.2,
-		kominH = 0.8;
 
 	glDisable(GL_LIGHTING);
 	glColor3f(0.2f, 0.2f, 0.2f); // kolor cienia
+	
 	glPushMatrix();
 		glMultMatrixf((GLfloat *)shadow_matrix);
 		generateLoco(1);
@@ -98,24 +77,19 @@ void Lokomotywa::generateLoco(bool shadow)
 		glDisable(GL_LIGHTING);
 		glColor3f(0.2f, 0.2f, 0.2f); // kolor cienia
 	}
-	
 
 	glPushMatrix();
-	
-
-
 
 	glTranslatef(x, 1.0, z);		// przesuniecie modelu
 	glRotatef(this->alfa, 0.0, 1.0, 0.0);
 
 	// komin-------------
 	glPushMatrix();
-	
 	glRotatef(90, 1.0, 0.0, 0.0);
 	glTranslatef(0.0, 0.0, -1.5);
 	gluCylinder(obj, kominR1, kominR2, kominH, 30, 30);
 	glPopMatrix();
-	// end --- komin-------------
+	
 
 	// walec
 	glPushMatrix();
@@ -147,17 +121,15 @@ void Lokomotywa::generateLoco(bool shadow)
 
 	// kola
 	glPushMatrix();
-	//glDisable(GL_LIGHTING);
 	// prawa strona
-	drawWheel(1.0, -0.5, 0.45, 0.4, shadow);
-	drawWheel(0.1, -0.5, 0.45, 0.4, shadow);
-	drawWheel(-0.8, -0.5, 0.45, 0.4, shadow);
+	drawWheel(1.0, -0.58, 0.50, 0.4, shadow);
+	drawWheel(0.1, -0.58, 0.50, 0.4, shadow);
+	drawWheel(-0.8, -0.58, 0.50, 0.4, shadow);
 
 	// lewa strona
-	drawWheel(1.0, -0.5, -0.6, 0.4, shadow);
-	drawWheel(0.1, -0.5, -0.6, 0.4, shadow);
-	drawWheel(-0.8, -0.5, -0.6, 0.4, shadow);
-	//glEnable(GL_LIGHTING);
+	drawWheel(1.0, -0.58, -0.6, 0.4, shadow);
+	drawWheel(0.1, -0.58, -0.6, 0.4, shadow);
+	drawWheel(-0.8, -0.58, -0.6, 0.4, shadow);
 	glPopMatrix();
 
 	glPopMatrix();
@@ -200,10 +172,6 @@ void Lokomotywa::drawWheel(GLfloat x, GLfloat y, GLfloat z, GLdouble innerradius
 
 void Lokomotywa::move()
 {
-	//std::cout << "move \n";
-	// jedziemy po okregu
-	// x = rcosFI
-	// z = rsinFI
 	x = (GLfloat)R*sin(M_PI*alfa/180.0);
 	z = (GLfloat)R*cos(M_PI*alfa / 180.0);
 	alfa += dalfa;
@@ -220,66 +188,29 @@ void Lokomotywa::move()
 		
 		if (effect->getsmokeNumber() < 5)
 		{
-			//std::cout << "jestem1 \n";
-			effect->smoke(this->getChimneyX(), this->getChimneyZ());
+			if (nextSmoke)
+			{
+				xSmoke = this->getChimneyX();
+				zSmoke = this->getChimneyZ();
+				nextSmoke = false;
+			}
+			effect->smoke(xSmoke, zSmoke);
 			if (effect->getSmokeAlpha() <= 0.05)
 			{
-				//std::cout << "jestem2 \n";
 				effect->incrementsmokeNumber();
 				effect->setSmokeAlphaToOne();
 				effect->setDefaultYSmoke();
 				effect->setDefaultRSmoke();
+				nextSmoke = true;
 			}
 		}
 		else
 		{
-			//std::cout << "else \n";
 			lap = false;
 			lapNumber = 0;
 			effect->setsmokeNumber();
 		}
 	}
-		/*if (effect->getCounter() < -10000)
-		{
-			effect->smoke(this->getChimneyX(), this->getChimneyZ());
-			effect->incrementCounter();
-		}
-		//if (effect->getCounter() >= 10000) effect->incrementsmokeNumber();
-	}
-
-		//}
-		//lapNumber = 0;
-	//}
-	/*
-	// w³¹czenie efektu mg³y
-	glEnable(GL_FOG);
-
-	// wskazówki jakoœci generacji mg³y
-	glHint(GL_FOG_HINT, fog_hint);
-
-	// kolor mg³y
-	GLfloat fog_color[4] = { 0.9, 0.9, 0.9, 1.0 };
-	glFogfv(GL_FOG_COLOR, fog_color);
-
-	// gêstoœæ mg³y
-	glFogf(GL_FOG_DENSITY, fog_density);
-
-	// rodzaj mg³y
-	glFogf(GL_FOG_MODE, fog_mode);
-
-	// pocz¹tek i koniec oddzia³ywania mg³y liniowej
-	glFogf(GL_FOG_START, fog_start);
-	glFogf(GL_FOG_END, fog_end);
-	
-	/*glBegin(GL_TRIANGLES);
-	glVertex3f(0.0, 0.0, 0.0);
-	glVertex3f(5.0, 5.0, 0.0);
-	glVertex3f(8.0, 8.0, 8.0);
-	glEnd();
-	glDisable(GL_FOG);
-	//glutSolidSphere(3.0, 30, 30);
-	*/
-	
 }
 
 GLfloat Lokomotywa::getNextWheelXCord(int i, GLfloat radius)

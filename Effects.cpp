@@ -1,8 +1,9 @@
 #include "Effects.h"
+#include <iostream>
 
 const GLfloat SmokeAmbient[4] = { 0.25, 0.25, 0.25, 0.5 };
 const GLfloat SmokeDiffuse[4] = { 0.40, 0.40, 0.40, 1.0 };
-const GLfloat SmokeSpecular[4] = { 0.0, 0.0, 0.0, 0.0 };
+const GLfloat SmokeSpecular[4] = { 0.0, 0.0, 0.0, 1.0 };
 const GLfloat SmokeShininess = 0;
 
 
@@ -26,22 +27,26 @@ Effects::~Effects()
 
 void Effects::smoke(GLfloat x, GLfloat z)
 {
-	glPushMatrix();
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, ambientS);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuseS);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specularS);
 	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shininessS);
-	//glDisable(GL_LIGHTING);
-	glColor4f(1.0, 1.0, 1.0, smokeAlpha);
+
+	glDisable(GL_LIGHTING);
+
+	glPushMatrix();
+	glColor4f(0.77, 0.77, 0.77, 1.0);
 	glTranslatef(x, this->y, z);
 	glutSolidSphere(R, 30, 30);
 	glPopMatrix();
-	//glEnable(GL_LIGHTING);
+
+	glEnable(GL_LIGHTING);
+		
 	if (smokeAlpha >= 0 && smokeDown)
 	{
-		smokeAlpha -= 0.01;
+		smokeAlpha -= 0.03;
 		y += 0.01;
-		R += 0.005;
+		R += 0.01;
 		if (smokeAlpha < 0) smokeUp = true;
 	}
 	if (smokeUp)
@@ -57,13 +62,11 @@ void Effects::smoke(GLfloat x, GLfloat z)
 	
 }
 
-
-
 void Effects::generateShadowMatrix(GLfloat shadow[4][4], GLfloat plane[4], GLfloat light[4])
 {
+	// iloczyn skalarny
 	GLfloat is;
 
-	// iloczyn skalarny
 	is = plane[X] * light[X] +
 		plane[Y] * light[Y] +
 		plane[Z] * light[Z] +
